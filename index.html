@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Sguigee</title>
+    <link rel="stylesheet" type="text/css" href="build/build.css">
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Sguigee</h1>
+        <h3>A GUI library for Python</h3><br>
+        <div id="info">
+          <h4>Tuomas Laakkonen, 2015</h4>
+          <h4>Available on <a href="https://github.com/tuomas56/sguigee">Github</a></h4>
+        </div>
+      </section>
+      <section>
+        <h2>Based on TKInter</h2>
+      </section>
+      <section>
+        <h2 class="bullet">Split into two levels</h2>
+        <ul>
+          <li>Advanced</li>
+          <li>Easy</li>
+        </ul>
+      </section>
+      <section>
+        <h2>We're doing the easy version</h2>
+      </section>
+      <section>
+        <h2 class="bullet">So why not just use TKInter?</h2><br>
+        <ul>
+          <li>
+            <h4>Confusing</h4>
+          </li>
+          <li>
+            <h4>Long</h4>
+          </li>
+          <li>
+            <h4>Not very Pythonic</h4>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Code first </h2>
+        <h2>ask questions later</h2>
+        <h3>A Simple 'Hello World' Example</h3>
+        <pre><code id="old" class="language-python">import tkinter as tk
+
+t = tk.Tk()
+t.title('Hello World')
+x = tk.Label(t, 
+  text='Hello World')
+x.pack(fill='x', expand=True, 
+  side='left')
+t.mainloop()
+</code><code id="new" class="language-python">from sguigee import window, label
+
+with window(title='Hello World'):
+  label('Hello World')
+  </code></pre>
+      </section>
+      <section>
+        <h2 class="bullet">So how do we use it?</h2><br>
+        <ul>
+          <li>
+            <h1>The Grid!</h1>
+          </li>
+        </ul>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <div class="bullet">
+          <ul>
+            <li>
+              <h2><i>Windows</i> are the base unit</h2><br>
+            </li>
+            <li>
+              <h2>A Window divides into <i>Rows</i></h2><br>
+            </li>
+            <li>
+              <h2>Rows <i>Stack</i></h2>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <h2 class="bullet">An example</h2><br>
+        <ul>
+          <li><img src="images/calculator.png"/></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Example: Calculator</h2><br>
+        <pre><code id="calculator" class="language-python">from gui import window, row, button, textbox
+import operator as op
+
+def make_button(text):
+  @button(text)
+  def _button():
+    output.set(output.get() + text)
+  return _button
+  
+def make_operator(t, op):
+  @button(t, expand=False, use_monospace_font=True)
+  def _button():
+    stack.append(float(output.get()))
+    output.set('')
+    stack.append(op)
+    
+stack = []
+with window(title="Calculator", set_minimum_size=True, can_resize=False):
+  with row():
+    output = textbox()
+    
+  with row():
+    make_button('1')
+    make_button('2')
+    make_button('3')
+    make_operator('+', op.add)
+    
+  with row():
+    make_button('4')
+    make_button('5')
+    make_button('6')
+    make_operator('-', op.sub)
+    
+  with row():
+    make_button('7')
+    make_button('8')
+    make_button('9')
+    make_operator('*', op.mul)
+    
+  with row():
+    make_button('0')
+    make_button('.')
+    make_operator('/', op.truediv)
+    
+  with row():
+    @button('Clear')
+    def clear():
+      output.set('')
+      
+    @button('Clear All')
+    def clear_all():
+      stack = []
+      output.set('')
+      
+    @button('=')
+    def compute():
+      while len(stack) >= 2:
+        op, lhs = stack.pop(), stack.pop()
+        output.set(op(lhs, float(output.get())))
+        </code></pre>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <h1>Lets Get Started!</h1>
+      </section>
+      <section>
+        <h2>The 'With' Statement</h2><br>
+        <ul>
+          <li>A way of seperating code blocks.</li>
+          <li>Used in Sguigee for containers.</li>
+          <li>Looks like this:
+            <pre><code class="language-python">with something(options):
+  something else
+  </code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Windows</h2><br>
+        <ul>
+          <li>Use the 'with' statement.</li>
+          <li>Have several options (<code>can_resize</code> etc.)</li>
+          <li>
+            <pre><code class="language-python">with window(title='Title'):
+  pass
+  </code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Rows</h2><br>
+        <ul>
+          <li>Also use the 'with' statement.</li>
+          <li>Simple, no options</li>
+          <li>
+            <pre><code class="language-python">with row():
+  pass
+  </code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Let's combine the two!</h2><br>
+        <pre><code class="language-python">with window(title="Title"):
+  with row():
+    pass
+  with row():
+    pass
+    </code></pre>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <h1>But I have no actual content!</h1>
+      </section>
+      <section>
+        <h2>Labels</h2><br>
+        <ul>
+          <li>Like text boxes on word.</li>
+          <li>Allow you to put some text in a row.</li>
+          <li>Simple:
+            <pre><code class="language-python">label("Label Text")
+</code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Lets put this all together!</h2><br class="bullet">
+        <ul>
+          <li>
+            <pre><code class="language-python">with window(title="Test"):
+  with row():
+    label("Hello World")</code></pre>
+          </li>
+          <li><img src="images/test1.png"/></li>
+        </ul>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <h1>Note: All elements <i>Must</i> be in a row!</h1>
+      </section>
+      <section>
+        <h2>Textboxes</h2><br class="bullet">
+        <ul>
+          <li>Slightly more complicated!</li>
+          <li>Why?</li>
+          <li>Textboxes have <i>text which changes!</i></li>
+          <li>So how do we use them?</li>
+          <li>
+            <pre><code class="language-python">t = textbox()</code></pre>
+          </li>
+          <li>How do we get the users input?</li>
+          <li>
+            <pre><code class="language-python">t.get()
+</code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Lets try this!</h2>
+        <ul>
+          <li>
+            <pre><code class="language-python">with window(title='Textbox'):
+  with row():
+    t = textbox()
+    
+print(t.get())</code></pre>
+          </li>
+          <li><span>But <i>Nothing</i> happens!?</span></li>
+          <li><span>This is because the program stops <i>before</i> <code>print(t.get())</code></span></li>
+          <li>
+            <h2>Why?!</h2>
+          </li>
+        </ul>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <h1>Because code can only execute when the user <i>does</i> something!</h1>
+      </section>
+      <section>
+        <h2>So... How do we do anything?</h2><br class="bullet">
+        <ul>
+          <li>Well, the problem before was that there was nothing for the user to do.</li>
+          <li>Just a textbox for them to fill in.</li>
+          <li>We need something they can click...</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Buttons!</h2><br class="bullet">
+        <ul>
+          <li>Slightly different to normal.</li>
+          <li>Why?</li>
+          <li>Because they execute some code when clicked.</li>
+          <li>
+            <pre><code class="language-python">@button("Button Text")
+def on_button_click():
+  print("Hello!")
+  </code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>What's with the '@' thingy?</h2><br class="bullet">
+        <ul>
+          <li>Called a decorator.</li>
+          <li>Don't worry about it.</li>
+          <li>There just the way to do buttons (at this level...)</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Now can we put it all together?</h2><br>
+        <ul>
+          <li>
+            <pre><code class="language-python">with window(title='Textbox'):
+  with row():
+    t = textbox()
+    
+    @button("Go")
+    def go_click():
+      print(t.get())</code></pre>
+          </li>
+          <li><img src="images/test2.png"></img></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Did it work?</h2><br class="bullet">
+        <ul>
+          <li><img src="images/test3.png"></img></li>
+          <li>
+            <h3>Yes!</h3>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Another thing about text boxes</h2><br class="bullet">
+        <ul>
+          <li>You can also set the text inside them.</li>
+          <li>
+            <pre><code class="language-python">t.set('Textbox content.')
+</code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>One last thing: Message boxes</h2><br class="bullet">
+        <ul>
+          <li>Used to show, information, errors etc.</li>
+          <li>Just like print...</li>
+          <li>
+            <pre><code class="language-python">show_message('Hello', name)</code></pre>
+          </li>
+          <li>Can also customize the title, message type etc.</li>
+          <li>
+            <pre><code class="language-python">show_message('Aah!', title='Error', type='error')
+</code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>How do we design a program that uses Sguigee?</h2><br class="bullet">
+        <h4>Simple steps to follow:</h4>
+        <ul>
+          <li>DRAW YOUR GUI OUT ON PAPER</li>
+          <li>PLEASE, PLEASE, PLEASE DO THAT!</li>
+          <li>Then, divide it up into rows.</li>
+          <li>Translate that into code.</li>
+        </ul>
+      </section>
+      <section data-bespoke-backdrop="emphatic" class="emphatic-text">
+        <h1>Questions?</h1>
+      </section>
+      <section>
+        <h2>Now go code!</h2>
+        <h3>Challenge 1</h3><br>
+        <h4>Write a program to add two numbers.</h4>
+        <h4 class="bullet">The program should:</h4>
+        <ul>
+          <li>Have two textboxes, one for each number.</li>
+          <li>It should have a button that says 'add'.</li>
+          <li>The button should be on a seperate row below the textboxes.</li>
+          <li>When you click the button, the program should display a message box showing the sum of the numbers.</li>
+        </ul>
+      </section>
+    </article>
+    <script src="build/build.js"></script>
+  </body>
+</html>
