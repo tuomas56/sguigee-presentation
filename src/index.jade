@@ -1,0 +1,382 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Sguigee
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        h1 Sguigee
+        h3 A GUI library for Python
+        br
+        div#info
+          h4 Tuomas Laakkonen, 2015
+          h4 Available on <a href="https://github.com/tuomas56/sguigee">Github</a>
+
+      section
+        h2 Based on TKInter
+
+      section
+        h2.bullet Split into two levels
+        ul
+          li Advanced
+          li Easy
+
+      section
+        h2 We're doing the easy version
+
+      section
+        h2.bullet So why not just use TKInter?
+        br
+        ul
+          li 
+            h4 Confusing
+          li 
+            h4 Long
+          li 
+            h4 Not very Pythonic
+
+      section
+        h2 Code first 
+        h2 ask questions later
+        h3 A Simple 'Hello World' Example
+        pre
+          code.language-python#old.
+            import tkinter as tk
+
+            t = tk.Tk()
+            t.title('Hello World')
+            x = tk.Label(t, 
+              text='Hello World')
+            x.pack(fill='x', expand=True, 
+              side='left')
+            t.mainloop()
+
+          code.language-python#new.
+            from sguigee import window, label
+
+            with window(title='Hello World'):
+              label('Hello World')
+
+      section
+        h2.bullet So how do we use it?
+        br
+        ul
+          li
+            h1 The Grid!
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        .bullet
+          ul
+            li
+              h2 <i>Windows</i> are the base unit
+              br
+            li
+              h2 A Window divides into <i>Rows</i>
+              br
+            li
+              h2 Rows <i>Stack</i>
+
+      section
+        h2.bullet An example
+        br
+        ul
+          li
+            <img src="images/calculator.png"/>
+
+      section
+        h2 Example: Calculator
+        br
+        pre
+          code.language-python#calculator.
+            from gui import window, row, button, textbox
+            import operator as op
+
+            def make_button(text):
+              @button(text)
+              def _button():
+                output.set(output.get() + text)
+              return _button
+
+            def make_operator(t, op):
+              @button(t, expand=False, use_monospace_font=True)
+              def _button():
+                stack.append(float(output.get()))
+                output.set('')
+                stack.append(op)
+
+            stack = []
+            with window(title="Calculator", set_minimum_size=True, can_resize=False):
+              with row():
+                output = textbox()
+
+              with row():
+                make_button('1')
+                make_button('2')
+                make_button('3')
+                make_operator('+', op.add)
+
+              with row():
+                make_button('4')
+                make_button('5')
+                make_button('6')
+                make_operator('-', op.sub)
+
+              with row():
+                make_button('7')
+                make_button('8')
+                make_button('9')
+                make_operator('*', op.mul)
+
+              with row():
+                make_button('0')
+                make_button('.')
+                make_operator('/', op.truediv)
+
+              with row():
+                @button('Clear')
+                def clear():
+                  output.set('')
+
+                @button('Clear All')
+                def clear_all():
+                  stack = []
+                  output.set('')
+
+                @button('=')
+                def compute():
+                  while len(stack) >= 2:
+                    op, lhs = stack.pop(), stack.pop()
+                    output.set(op(lhs, float(output.get())))
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        h1 Lets Get Started!
+
+      section
+        h2 The 'With' Statement
+        br
+        ul
+          li A way of seperating code blocks.
+          li Used in Sguigee for containers.
+          li Looks like this:
+            pre
+              code.language-python.
+                with something(options):
+                  something else
+
+      section
+        h2 Windows
+        br
+        ul
+          li Use the 'with' statement.
+          li Have several options (<code>can_resize</code> etc.)
+          li
+            pre
+              code.language-python.
+                with window(title='Title'):
+                  pass
+
+      section
+        h2 Rows
+        br
+        ul
+          li Also use the 'with' statement.
+          li Simple, no options
+          li
+            pre
+              code.language-python.
+                with row():
+                  pass
+
+      section
+        h2 Let's combine the two!
+        br
+        pre
+          code.language-python.
+            with window(title="Title"):
+              with row():
+                pass
+              with row():
+                pass
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        h1 But I have no actual content!
+
+      section
+        h2 Labels
+        br
+        ul
+          li Like text boxes on word.
+          li Allow you to put some text in a row.
+          li Simple:
+            pre
+              code.language-python.
+                label("Label Text")
+
+      section
+        h2 Lets put this all together!
+        br.bullet
+        ul
+          li
+            pre
+              code.language-python.
+                with window(title="Test"):
+                  with row():
+                    label("Hello World")
+          li <img src="images/test1.png"/>
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        h1 Note: All elements <i>Must</i> be in a row!
+
+      section
+        h2 Textboxes
+        br.bullet
+        ul
+          li Slightly more complicated!
+          li Why?
+          li Textboxes have <i>text which changes!</i>
+          li So how do we use them?
+          li
+            pre
+              code.language-python.
+                t = textbox()
+          li How do we get the users input?
+          li
+            pre
+              code.language-python.
+                t.get()
+
+      section
+        h2 Lets try this!
+        ul
+          li
+            pre
+              code.language-python.
+                with window(title='Textbox'):
+                  with row():
+                    t = textbox()
+
+                print(t.get())
+          li
+            span But <i>Nothing</i> happens!?
+          li
+            span This is because the program stops <i>before</i> <code>print(t.get())</code>
+          li
+            h2 Why?!
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        h1 Because code can only execute when the user <i>does</i> something!
+
+      section
+        h2 So... How do we do anything?
+        br.bullet
+        ul
+          li Well, the problem before was that there was nothing for the user to do.
+          li Just a textbox for them to fill in.
+          li We need something they can click...
+
+      section
+        h2 Buttons!
+        br.bullet
+        ul
+          li Slightly different to normal.
+          li Why?
+          li Because they execute some code when clicked.
+          li
+            pre
+              code.language-python.
+                @button("Button Text")
+                def on_button_click():
+                  print("Hello!")
+
+      section
+        h2 What's with the '@' thingy?
+        br.bullet
+        ul
+          li Called a decorator.
+          li Don't worry about it.
+          li There just the way to do buttons (at this level...)
+
+      section
+        h2 Now can we put it all together?
+        br
+        ul
+          li
+            pre
+              code.language-python.
+                with window(title='Textbox'):
+                  with row():
+                    t = textbox()
+
+                    @button("Go")
+                    def go_click():
+                      print(t.get())
+          li <img src="images/test2.png"></img>
+
+      section
+        h2 Did it work?
+        br.bullet
+        ul
+          li <img src="images/test3.png"></img>
+          li 
+            h3 Yes!
+
+      section
+        h2 Another thing about text boxes
+        br.bullet
+        ul
+          li You can also set the text inside them.
+          li
+            pre
+              code.language-python.
+                t.set('Textbox content.')
+
+      section
+        h2 One last thing: Message boxes
+        br.bullet
+        ul
+          li Used to show, information, errors etc.
+          li Just like print...
+          li
+            pre
+              code.language-python.
+                show_message('Hello', name)
+          li Can also customize the title, message type etc.
+          li
+            pre
+              code.language-python.
+                show_message('Aah!', title='Error', type='error')
+
+      section
+        h2 How do we design a program that uses Sguigee?
+        br.bullet
+        h4 Simple steps to follow:
+        ul
+          li DRAW YOUR GUI OUT ON PAPER
+          li PLEASE, PLEASE, PLEASE DO THAT!
+          li Then, divide it up into rows.
+          li Translate that into code.
+
+      section.emphatic-text(data-bespoke-backdrop='emphatic')
+        h1 Questions?
+
+      section
+        h2 Now go code!
+        h3 Challenge 1
+        br
+        h4 Write a program to add two numbers.
+        h4.bullet The program should:
+        ul
+          li Have two textboxes, one for each number.
+          li It should have a button that says 'add'.
+          li The button should be on a seperate row below the textboxes.
+          li When you click the button, the program should display a message box showing the sum of the numbers.
+
+
+    script(src='build/build.js')
