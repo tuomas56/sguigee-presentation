@@ -357,7 +357,7 @@ html
           li Check <a href="http://effbot.org/tkinterbook/canvas.htm">here</a> for details.
 
       section
-        h2 One last thing: Message boxes
+        h2 Some more things: Message boxes
         br.bullet
         ul
           li Used to show, information, errors etc.
@@ -371,6 +371,33 @@ html
             pre
               code.language-python.
                 show_message('Aah!', title='Error', type='error')
+
+      section
+        h2 Dialog Boxes
+        br.bullet
+        ul
+          li Like message boxes but for input instead of output.
+          li Just like input...
+          li
+            pre
+              code.language-python.
+                name = ask_message('Enter your name:')
+                number = int(ask_message('Enter a number:'))
+
+      section
+        h2 Timers
+        br.bullet
+        ul
+          li Make things happen after a time delay.
+          li Works like buttons:
+          li 
+            pre
+              code.language-python.
+                @after(10)
+                def on_timeout():
+                  print("HEY!")
+          li Except instead of executing when clicked,
+          li they execute when the timer runs out.
 
       section
         h2 How do we design a program that uses Sguigee?
@@ -397,5 +424,4 @@ html
           li The button should be on a seperate row below the textboxes.
           li When you click the button, the program should display a message box showing the sum of the numbers.
 
-
-    script(src='build/build.js')
+      script(src='build/build.js')
