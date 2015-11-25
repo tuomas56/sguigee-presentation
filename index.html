@@ -332,7 +332,24 @@ def on_button_click():
         </ul>
       </section>
       <section>
-        <h2>One last thing: Message boxes</h2><br class="bullet">
+        <h2>Canvas</h2><br class="bullet">
+        <ul>
+          <li>Draw things on the screen.</li>
+          <li>
+            <pre><code class="language-python">c = canvas()</code></pre>
+          </li>
+          <li>Simple to use:</li>
+          <li>
+            <pre><code class="language-python">c.create_rectangle((10, 10, 10, 10))</code></pre>
+          </li>
+          <li>Note the double brackets for rectangles...</li>
+          <li>Other primitives are available.</li>
+          <li>E.g) Arcs, Lines, Ovals, Images, Text.</li>
+          <li>Check <a href="http://effbot.org/tkinterbook/canvas.htm">here</a> for details.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Some more things: Message boxes</h2><br class="bullet">
         <ul>
           <li>Used to show, information, errors etc.</li>
           <li>Just like print...</li>
@@ -344,6 +361,32 @@ def on_button_click():
             <pre><code class="language-python">show_message('Aah!', title='Error', type='error')
 </code></pre>
           </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Dialog Boxes</h2><br class="bullet">
+        <ul>
+          <li>Like message boxes but for input instead of output.</li>
+          <li>Just like input...</li>
+          <li>
+            <pre><code class="language-python">name = ask_message('Enter your name:')
+number = int(ask_message('Enter a number:'))
+</code></pre>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Timers</h2><br class="bullet">
+        <ul>
+          <li>Make things happen after a time delay.</li>
+          <li>Works like buttons:</li>
+          <li>
+            <pre><code class="language-python">@after(10)
+def on_timeout():
+  print("HEY!")</code></pre>
+          </li>
+          <li>Except instead of executing when clicked,</li>
+          <li>they execute when the timer runs out.</li>
         </ul>
       </section>
       <section>
@@ -371,7 +414,7 @@ def on_button_click():
           <li>When you click the button, the program should display a message box showing the sum of the numbers.</li>
         </ul>
       </section>
+      <script src="build/build.js"></script>
     </article>
-    <script src="build/build.js"></script>
   </body>
 </html>
